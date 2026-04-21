@@ -21,8 +21,48 @@ export function Hero() {
         maxWidth: "var(--container-xl)",
         margin: "0 auto",
         zIndex: 1,
+        overflow: "hidden"
       }}
     >
+      {/* ── Background Video ── */}
+      <div 
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: -2,
+          background: "var(--color-bg-base)", // Fallback color
+        }}
+      >
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            opacity: 0.5, // Ajustado a ~50-60% para que no distraiga del texto
+            transform: "scale(1.2)", // Zoom para encuadrar la impresora
+            filter: "contrast(1.1) brightness(0.9)",
+          }}
+        >
+          <source src="/videos/inicio.mov" type="video/quicktime" />
+          <source src="/videos/inicio.mp4" type="video/mp4" />
+        </video>
+        
+        {/* Overlay gradient to ensure text readability */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          background: "linear-gradient(to bottom, rgba(var(--color-bg-base-rgb), 0.4) 0%, rgba(var(--color-bg-base-rgb), 0.8) 100%)",
+          zIndex: 1
+        }} />
+      </div>
+
       {/* ── Fondo Hero Decorativo ── */}
       <div 
         style={{
@@ -31,10 +71,9 @@ export function Hero() {
           left: 0,
           right: 0,
           height: "100vh",
-          background: "linear-gradient(to bottom, var(--color-bg-muted) 0%, transparent 100%)",
           pointerEvents: "none",
           zIndex: -1,
-          opacity: 0.6,
+          opacity: 0.4,
         }}
       >
         <CursorGlow behindContent={true} />
@@ -44,6 +83,7 @@ export function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
+        style={{ position: "relative", zIndex: 10 }}
       >
         <span
           style={{
@@ -52,8 +92,12 @@ export function Hero() {
             letterSpacing: "var(--tracking-widest)",
             textTransform: "uppercase",
             fontWeight: "var(--weight-semibold)",
-            color: "var(--color-text-tertiary)",
+            color: "var(--color-text-primary)",
+            background: "rgba(var(--color-bg-base-rgb), 0.5)",
+            padding: "var(--space-1) var(--space-2)",
+            borderRadius: "var(--radius-sm)",
             marginBottom: "var(--space-6)",
+            backdropFilter: "blur(4px)",
           }}
         >
           Estudio de Impresión 3D
@@ -69,6 +113,7 @@ export function Hero() {
             color: "var(--color-text-primary)",
             maxWidth: "20ch",
             marginBottom: "var(--space-8)",
+            textShadow: "0 2px 10px rgba(var(--color-bg-base-rgb), 0.5)",
           }}
         >
           {words.map((word, i) => (
@@ -113,6 +158,7 @@ export function Hero() {
             lineHeight: "var(--leading-relaxed)",
             maxWidth: "50ch",
             marginBottom: "var(--space-12)",
+            textShadow: "0 1px 4px rgba(var(--color-bg-base-rgb), 0.3)",
           }}
         >
           Objetos únicos, diseñados y fabricados digitalmente. Fusionamos la
@@ -129,7 +175,9 @@ export function Hero() {
                 style={{ 
                   border: "2px solid var(--color-accent)",
                   color: "var(--color-text-primary)",
-                  minWidth: "220px"
+                  minWidth: "220px",
+                  backgroundColor: "rgba(var(--color-bg-base-rgb), 0.3)",
+                  backdropFilter: "blur(8px)",
                 }}
                 whileHover={{ 
                   backgroundColor: "var(--color-accent)",
