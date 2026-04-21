@@ -83,7 +83,7 @@ export function Marquee({ items, title = "Nuevos lanzamientos" }: MarqueeProps) 
             >
               <div
                 style={{
-                  flex: 1,
+                  aspectRatio: "1/1",
                   background: "var(--color-surface-2)",
                   borderRadius: "var(--radius-lg)",
                   marginBottom: "var(--space-6)",
