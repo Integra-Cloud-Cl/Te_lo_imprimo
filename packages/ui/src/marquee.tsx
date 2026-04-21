@@ -1,7 +1,17 @@
 "use client";
 
+import React from "react";
+import Image from "next/image";
+
+interface Product {
+  id: string | number;
+  name: string;
+  category: string;
+  image?: string;
+}
+
 interface MarqueeProps {
-  items: { id: string | number; name: string; category: string }[];
+  items: Product[];
   title?: string;
 }
 
