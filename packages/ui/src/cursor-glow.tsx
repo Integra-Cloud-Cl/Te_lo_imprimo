@@ -43,7 +43,7 @@ export function CursorGlow({ zIndex = 1, behindContent = false }: CursorGlowProp
 
       if (!visibleRef.current && glowRef.current) {
         visibleRef.current = true;
-        glowRef.current.style.opacity = "1";
+        glowRef.current.style.opacity = "0.7"; // Reducido 30%
         // Initialize position to prevent jump from origin
         posRef.current = { x: e.clientX, y: e.clientY };
       }
@@ -81,14 +81,14 @@ export function CursorGlow({ zIndex = 1, behindContent = false }: CursorGlowProp
         marginLeft: "-200px",
         marginTop: "-200px",
         pointerEvents: "none",
-        zIndex: behindContent ? -1 : zIndex,
+        zIndex: -1, // Siempre atrás de todo
         opacity: 0,
         willChange: "transform",
         transition: "opacity 0.4s ease",
         background:
-          "radial-gradient(circle, var(--color-highlight) 0%, rgba(245,230,66,0.08) 30%, transparent 70%)",
+          "radial-gradient(circle, var(--color-highlight) 0%, rgba(245,230,66,0.05) 30%, transparent 70%)",
         mixBlendMode: "soft-light",
-        filter: "blur(2px)",
+        filter: "blur(4px)",
       }}
     />
   );
