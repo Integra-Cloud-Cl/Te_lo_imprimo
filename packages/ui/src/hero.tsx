@@ -7,6 +7,8 @@ import { RevealOnScroll } from "./animations";
 import { CursorGlow } from "./cursor-glow";
 
 export function Hero() {
+  const words = "Materializamos ideas con".split(" ");
+
   return (
     <section
       style={{
@@ -46,7 +48,7 @@ export function Hero() {
         <span
           style={{
             display: "inline-block",
-            fontSize: "var(--text-ms)",
+            fontSize: "var(--text-xs)",
             letterSpacing: "var(--tracking-widest)",
             textTransform: "uppercase",
             fontWeight: "var(--weight-semibold)",
@@ -62,26 +64,46 @@ export function Hero() {
             fontFamily: "var(--font-display)",
             fontSize: "clamp(var(--text-4xl), 8vw, var(--text-6xl))",
             fontWeight: "var(--weight-regular)",
-            lineHeight: "var(--leading-none)",
-            letterSpacing: "var(--tracking-tighter)",
+            lineHeight: "var(--leading-tight)",
+            letterSpacing: "-0.02em",
             color: "var(--color-text-primary)",
-            maxWidth: "15ch",
+            maxWidth: "20ch",
             marginBottom: "var(--space-8)",
           }}
         >
-          Materializamos ideas con{" "}
-          <span
+          {words.map((word, i) => (
+            <motion.span
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
+              style={{ display: "inline-block", marginRight: "0.25em" }}
+            >
+              {word}
+            </motion.span>
+          ))}
+          <br />
+          <motion.span
+            initial={{ scale: 0.8, opacity: 0, rotate: -10 }}
+            animate={{ scale: 1, opacity: 1, rotate: -2 }}
+            transition={{ 
+              delay: words.length * 0.1, 
+              type: "spring", 
+              stiffness: 200, 
+              damping: 15 
+            }}
             style={{
               color: "var(--color-text-inverse)",
               backgroundColor: "var(--color-accent)",
-              padding: "0 0.15em",
+              padding: "0 0.3em",
               borderRadius: "var(--radius-sm)",
               display: "inline-block",
-              transform: "rotate(-2deg)",
+              marginTop: "0.2em",
+              boxShadow: "var(--shadow-accent-md)"
             }}
           >
             precisión
-          </span>
+          </motion.span>
         </h1>
 
         <p
@@ -98,16 +120,30 @@ export function Hero() {
           destacan.
         </p>
 
-        <RevealOnScroll delay={0.4} direction="up">
-          <div style={{ display: "flex", gap: "var(--space-6)", alignItems: "center", flexWrap: "wrap" }}>
+        <RevealOnScroll delay={0.8} direction="up">
+          <div style={{ display: "flex", gap: "var(--space-6)", alignItems: "center" }}>
             <Link href="/tienda" style={{ textDecoration: "none" }}>
-              <MagneticButton variant="primary" size="lg">
+              <MagneticButton 
+                variant="ghost" 
+                size="lg"
+                style={{ 
+                  border: "2px solid var(--color-accent)",
+                  color: "var(--color-text-primary)",
+                  minWidth: "220px"
+                }}
+                whileHover={{ 
+                  backgroundColor: "var(--color-accent)",
+                  color: "white",
+                  scale: 1.05
+                }}
+                whileTap={{ 
+                  backgroundColor: "var(--color-accent)",
+                  scale: 0.95
+                }}
+              >
                 Explorar Tienda
               </MagneticButton>
             </Link>
-            <MagneticButton variant="ghost" size="lg" style={{ border: "1.5px solid var(--color-accent)" }}>
-              Ver Portfolio ↗
-            </MagneticButton>
           </div>
         </RevealOnScroll>
       </motion.div>
