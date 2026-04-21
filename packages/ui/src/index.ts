@@ -12,6 +12,7 @@ export * from "./product-card";
 export * from "./hero";
 export * from "./how-it-works";
 export * from "./marquee";
+export * from "./vision";
 
 
 // Hooks
