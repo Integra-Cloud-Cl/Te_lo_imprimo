@@ -89,11 +89,11 @@ export function Vision() {
               <h2 style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-3xl)", marginBottom: "var(--space-8)", color: "var(--color-text-primary)" }}>Nuestra Visión</h2>
               
               <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-6)" }}>
-                <p style={{ fontSize: "var(--text-lg)", color: "var(--color-text-primary)", fontWeight: "var(--weight-medium)", lineHeight: "var(--leading-relaxed)" }}>
+                <p style={{ fontSize: "var(--text-lg)", color: "var(--color-text-primary)", fontWeight: "var(--weight-medium)", lineHeight: "var(--leading-relaxed)", textAlign: "justify" }}>
                   Crear con propósito, no por exceso. No estamos aquí para llenar estantes, sino para materializar soluciones. Imaginamos un futuro donde la manufactura sea local, consciente y estrictamente necesaria.
                 </p>
                 
-                <p style={{ fontSize: "var(--text-md)", color: "var(--color-text-secondary)", lineHeight: "var(--leading-relaxed)" }}>
+                <p style={{ fontSize: "var(--text-md)", color: "var(--color-text-secondary)", lineHeight: "var(--leading-relaxed)", textAlign: "justify" }}>
                   Nos alejamos de la producción masiva para abrazar el valor de lo artesanal tecnológico: piezas diseñadas para durar, fabricadas con biopolímeros renovables y creadas bajo demanda. Nuestra meta es demostrar que la tecnología 3D es la herramienta definitiva para una economía circular, donde lo digital se vuelve físico solo cuando tiene un propósito real en tus manos.
                 </p>
               </div>
