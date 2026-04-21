@@ -8,7 +8,6 @@ import {
   Marquee,
   Vision
 } from "@repo/ui";
-import { MOCK_PRODUCTS } from "@/lib/data";
 import { useMemo } from "react";
 import { PRODUCTS } from "@/lib/data";
 

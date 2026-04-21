@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import { useRef, useState, useCallback } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, HTMLMotionProps } from "framer-motion";
 
 interface MagneticButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  extends Omit<HTMLMotionProps<"button">, "children"> {
+  children?: React.ReactNode;
   /** Magnetic pull strength (0–1). Default 0.35 */
   strength?: number;
   /** Visual variant */
