@@ -17,7 +17,7 @@ export function Marquee({ items, title = "Nuevos lanzamientos" }: MarqueeProps) 
     >
       <div style={{ padding: "0 var(--space-8)", maxWidth: "var(--container-xl)", margin: "0 auto", marginBottom: "var(--space-10)" }}>
         <h2 style={{
-          fontSize: "var(--text-xs)",
+          fontSize: "1.1rem", // Aumentado ~25% (era xs)
           letterSpacing: "var(--tracking-widest)",
           textTransform: "uppercase",
           color: "var(--color-text-tertiary)",
@@ -25,27 +25,42 @@ export function Marquee({ items, title = "Nuevos lanzamientos" }: MarqueeProps) 
         }}>{title}</h2>
       </div>
 
-      <div style={{ overflow: "hidden", width: "100%" }}>
+      <div 
+        style={{ 
+          overflowX: "auto", 
+          width: "100%",
+          cursor: "grab",
+          scrollbarWidth: "none", // Firefox
+          msOverflowStyle: "none", // IE/Edge
+        }}
+        className="hide-scrollbar"
+      >
         <style>{`
+          .hide-scrollbar::-webkit-scrollbar { display: none; }
           @keyframes marquee {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
           }
+          .marquee-container:hover {
+            animation-play-state: paused;
+          }
         `}</style>
         <div
+          className="marquee-container"
           style={{
             display: "flex",
             gap: "var(--space-6)",
             width: "max-content",
-            animation: "marquee 30s linear infinite",
+            animation: "marquee 40s linear infinite",
+            padding: "0 var(--space-8)"
           }}
         >
-          {[...items, ...items, ...items].map((product, i) => (
+          {[...items, ...items].map((product, i) => (
             <div
               key={`${product.id}-${i}`}
               style={{
                 width: "320px",
-                height: "400px",
+                height: "440px",
                 background: "var(--color-surface-1)",
                 borderRadius: "var(--radius-xl)",
                 border: "1.5px solid var(--color-border-subtle)",
@@ -53,6 +68,7 @@ export function Marquee({ items, title = "Nuevos lanzamientos" }: MarqueeProps) 
                 flexDirection: "column",
                 padding: "var(--space-6)",
                 boxShadow: "var(--shadow-sm)",
+                flexShrink: 0
               }}
             >
               <div
@@ -61,12 +77,22 @@ export function Marquee({ items, title = "Nuevos lanzamientos" }: MarqueeProps) 
                   background: "var(--color-surface-2)",
                   borderRadius: "var(--radius-lg)",
                   marginBottom: "var(--space-6)",
-                  display: "grid",
-                  placeItems: "center",
-                  color: "var(--color-text-disabled)",
+                  position: "relative",
+                  overflow: "hidden"
                 }}
               >
-                <div style={{ width: "100px", height: "100px", background: "var(--color-surface-3)", borderRadius: "var(--radius-md)" }} />
+                {(product as any).image ? (
+                  <Image 
+                    src={(product as any).image} 
+                    alt={product.name}
+                    fill
+                    style={{ objectFit: "cover" }}
+                  />
+                ) : (
+                  <div style={{ display: "grid", placeItems: "center", height: "100%", color: "var(--color-text-disabled)" }}>
+                    <div style={{ width: "100px", height: "100px", background: "var(--color-surface-3)", borderRadius: "var(--radius-md)" }} />
+                  </div>
+                )}
               </div>
               <div>
                 <span style={{ fontSize: "var(--text-xs)", color: "var(--color-text-tertiary)", textTransform: "uppercase", letterSpacing: "var(--tracking-wide)" }}>

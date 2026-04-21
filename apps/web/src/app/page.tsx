@@ -9,9 +9,14 @@ import {
   RevealOnScroll,
   MagneticButton
 } from "@repo/ui";
-import { MOCK_PRODUCTS } from "@/lib/data";
+import { PRODUCTS } from "@/lib/data";
+import { useMemo } from "react";
 
 export default function HomePage() {
+  const randomProducts = useMemo(() => {
+    return [...PRODUCTS].sort(() => Math.random() - 0.5).slice(0, 10);
+  }, []);
+
   return (
     <div
       style={{
@@ -27,7 +32,7 @@ export default function HomePage() {
       
       <Hero />
 
-      <Marquee items={MOCK_PRODUCTS} />
+      <Marquee items={randomProducts} />
 
       <HowItWorks />
 
