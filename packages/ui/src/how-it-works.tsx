@@ -1,22 +1,23 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { RevealOnScroll, StaggerChildren } from "./animations";
 
 const STEPS = [
   {
     num: "01",
-    title: "Elegir diseño",
-    desc: "Explora nuestro catálogo curado de objetos tridimensionales. Cada diseño está optimizado para su fabricación.",
+    title: "Encuentra tu estilo",
+    desc: "Date una vuelta por nuestro catálogo. Hemos seleccionado y ajustado cada diseño para que se vea impecable en el mundo real.",
   },
   {
     num: "02",
-    title: "Impresión premium",
-    desc: "Procesamos tu pedido. Cada pieza se imprime artesanalmente capa por capa con materiales de alta calidad.",
+    title: "Cobrando vida",
+    desc: "Aquí es donde ocurre la transformación. Cuidamos cada capa de impresión con materiales premium para que tu pieza sea única y resistente.",
   },
   {
     num: "03",
-    title: "Recibe en casa",
-    desc: "Enviamos tu pieza empacada con cuidado. Un objeto de diseño físico, materializado solo para ti.",
+    title: "Directo a tus manos",
+    desc: "Preparamos tu pedido con el cariño que merece y lo enviamos a tu puerta. Un objeto pensado por ti, materializado por nosotros.",
   },
 ];
 
@@ -50,11 +51,24 @@ export function HowItWorks() {
 
       <StaggerChildren style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-        gap: "var(--space-12)",
+        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+        gap: "var(--space-8)",
       }}>
         {STEPS.map((step) => (
-          <div key={step.num} style={{ display: "flex", flexDirection: "column" }}>
+          <motion.div 
+            key={step.num} 
+            whileHover={{ y: -8, boxShadow: "var(--shadow-lg)" }}
+            style={{ 
+              display: "flex", 
+              flexDirection: "column",
+              background: "var(--color-surface-1)",
+              padding: "var(--space-8)",
+              borderRadius: "var(--radius-xl)",
+              border: "1px solid var(--color-border-subtle)",
+              boxShadow: "var(--shadow-sm)",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
+            }}
+          >
             <span style={{
               fontFamily: "var(--font-mono)",
               fontSize: "var(--text-sm)",
@@ -68,8 +82,8 @@ export function HowItWorks() {
               {step.num}
             </span>
             <h3 style={{ fontSize: "var(--text-2xl)", fontWeight: "var(--weight-bold)", color: "var(--color-text-primary)", marginBottom: "var(--space-4)" }}>{step.title}</h3>
-            <p style={{ color: "var(--color-text-secondary)", lineHeight: "var(--leading-relaxed)" }}>{step.desc}</p>
-          </div>
+            <p style={{ color: "var(--color-text-secondary)", lineHeight: "var(--leading-relaxed)", margin: 0 }}>{step.desc}</p>
+          </motion.div>
         ))}
       </StaggerChildren>
     </section>
