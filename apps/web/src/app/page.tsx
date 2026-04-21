@@ -5,7 +5,8 @@ import {
   MagneticButton,
   RevealOnScroll,
   StaggerChildren,
-  Footer
+  Footer,
+  CursorGlow
 } from "@repo/ui";
 import Link from "next/link";
 
@@ -43,7 +44,10 @@ export default function HomePage() {
           zIndex: 0,
           opacity: 0.6,
         }}
-      />
+      >
+        {/* CursorGlow solo en el hero, detrás del contenido */}
+        <CursorGlow behindContent={true} />
+      </div>
       {/* ── Header ─────────────────────────────────────── */}
       <Header />
 

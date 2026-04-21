@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
 };
 
-import { CursorGlow, CartProvider, CartDrawer } from "@repo/ui";
+import { CartProvider, CartDrawer } from "@repo/ui";
 
 export default function RootLayout({
   children,
@@ -71,7 +71,6 @@ export default function RootLayout({
       </head>
       <body className="theme-transition">
         <CartProvider>
-          <CursorGlow />
           {children}
           <CartDrawer />
         </CartProvider>
