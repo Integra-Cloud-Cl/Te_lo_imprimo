@@ -42,7 +42,7 @@ export function Header() {
           right: 0,
           zIndex: 100,
           padding: isScrolled ? "var(--space-3) var(--space-8)" : "var(--space-6) var(--space-8)",
-          background: isScrolled ? "rgba(var(--color-bg-base-rgb), 0.85)" : "transparent",
+          backgroundColor: isScrolled ? "rgba(var(--color-bg-base-rgb), 0.85)" : "transparent",
           backgroundImage: "var(--bg-image-base, none)",
           backdropFilter: isScrolled ? "blur(20px)" : "blur(0px)",
           WebkitBackdropFilter: isScrolled ? "blur(20px)" : "blur(0px)",
