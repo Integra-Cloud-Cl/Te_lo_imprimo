@@ -96,6 +96,8 @@ export function Marquee({ items, title = "Nuevos lanzamientos" }: MarqueeProps) 
                     src={(product as any).image} 
                     alt={product.name}
                     fill
+                    sizes="320px"
+                    priority={i < 4} // Pre-carga las primeras imágenes para evitar lag inicial
                     style={{ objectFit: "cover" }}
                   />
                 ) : (
