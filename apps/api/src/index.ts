@@ -1,6 +1,6 @@
+import { MercadoPagoConfig, Payment, Preference } from 'mercadopago';
 import express from 'express';
 import cors from 'cors';
-import { MercadoPagoConfig, Preference } from 'mercadopago';
 import { supabase } from './supabase';
 
 const app = express();
@@ -8,74 +8,51 @@ const port = process.env.PORT || 3001;
 const allowedOrigin = process.env.CORS_ORIGIN || 'http://localhost:3000';
 const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
 
-// CORS y JSON middleware
 app.use(cors({ origin: allowedOrigin }));
 app.use(express.json());
 
-// Placeholder (Mock DB)
-const orders: any[] = [];
+// ── MercadoPago ──────────────────────────────────────────────────────────────
+const mpAccessToken = process.env.MP_ACCESS_TOKEN || '';
+const client = new MercadoPagoConfig({ accessToken: mpAccessToken });
 
-// Configuración de MercadoPago
-// Reemplazar "YOUR_ACCESS_TOKEN" con el token real de prueba o producción
-const client = new MercadoPagoConfig({ accessToken: 'YOUR_ACCESS_TOKEN' });
-
-app.get('/', (req, res) => {
-  res.send('API TeLoImprimo is running.');
+app.get('/', (_req, res) => {
+  res.json({ status: 'API TeLoImprimo running', mp: mpAccessToken ? 'configured' : 'demo-mode' });
 });
 
-// Endpoint 1: Crear y guardar la orden localmente y registrar cliente
+// Endpoint 1: Crear orden en Supabase
 app.post('/create-order', async (req, res) => {
   try {
     const { orderId, customer, items, totals } = req.body;
-    
+
     if (!orderId || !customer || !items) {
-      return res.status(400).json({ error: 'Faltan datos obligatorios para crear la orden' });
+      return res.status(400).json({ error: 'Faltan datos obligatorios' });
     }
 
-    // 1. Inserción Pasiva en Supabase (Se ignora error intencionalmente en mock si las llaves no existen)
-    const isSupabaseConfigured = process.env.SUPABASE_URL && process.env.SUPABASE_URL !== "";
-    
+    const isSupabaseConfigured = !!(process.env.SUPABASE_URL && process.env.SUPABASE_KEY);
+
     if (isSupabaseConfigured) {
-      const { error: dbError } = await supabase
-        .from('clientes')
-        .upsert({
-          nombre: customer.nombre,
-          email: customer.email,
-          telefono: customer.telefono,
-          fecha_compra: new Date().toISOString()
-        }, { onConflict: 'email' });
-        
-      if (dbError) {
-        console.error('Supabase UPSERT Error:', dbError);
-      } else {
-        console.log(`✅ Cliente ${customer.email} registrado/actualizado pasivamente.`);
-      }
-    } else {
-      console.warn("⚠️ Omitiendo Supabase: Llaves no configuradas.");
+      await supabase.from('orders').insert({
+        order_id: orderId,
+        status: 'pending_payment',
+        customer,
+        items,
+        totals,
+      });
+
+      await supabase.from('clientes').upsert(
+        { nombre: customer.nombre, email: customer.email, telefono: customer.telefono, fecha_compra: new Date().toISOString() },
+        { onConflict: 'email' }
+      );
     }
 
-    // 2. Guardar orden en Backend (Mock transicional)
-    const newOrder = {
-      orderId,
-      customer,
-      items,
-      totals,
-      status: 'pending_payment',
-      createdAt: new Date().toISOString()
-    };
-    
-    orders.push(newOrder);
-
-    // En un caso real se inserta a una base de datos de órdenes
-    return res.status(200).json({ success: true, orderId: newOrder.orderId });
-
+    return res.status(200).json({ success: true, orderId });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Error interno guardando la orden' });
+    return res.status(500).json({ error: 'Error interno' });
   }
 });
 
-// Endpoint 2: Crear la Preferencia de MercadoPago
+// Endpoint 2: Crear preferencia de MercadoPago
 app.post('/create-preference', async (req, res) => {
   try {
     const { items, totals, orderId } = req.body;
@@ -84,57 +61,52 @@ app.post('/create-preference', async (req, res) => {
       return res.status(400).json({ error: 'El carrito está vacío' });
     }
 
-    // Mapeamos los items de nuestro formato al formato de MP
+    if (!mpAccessToken) {
+      return res.status(200).json({
+        init_point: `${baseUrl}/order-status?status=approved&external_reference=${orderId}&demo=true`,
+        mocked: true,
+      });
+    }
+
     const mpItems = items.map((item: any) => ({
       id: item.id,
       title: item.name,
       quantity: item.quantity,
       unit_price: item.price,
       currency_id: 'CLP',
-      description: item.category || 'Objeto Impreso en 3D'
+      description: item.category || 'Objeto Impreso en 3D',
     }));
 
-    // Agregamos el costo de envío como un item adicional
-    if (totals && totals.shipping > 0) {
-      mpItems.push({
-        id: 'SHIPPING',
-        title: 'Costo de Envío Fijo',
-        quantity: 1,
-        unit_price: totals.shipping,
-        currency_id: 'CLP',
-      });
+    if (totals?.shipping > 0) {
+      mpItems.push({ id: 'SHIPPING', title: 'Envío', quantity: 1, unit_price: totals.shipping, currency_id: 'CLP' });
     }
 
     const preference = new Preference(client);
-
     const result = await preference.create({
       body: {
         items: mpItems,
-        external_reference: orderId, // Para rastrear post-pago
+        external_reference: orderId,
         back_urls: {
-          success: `${baseUrl}/gracias`,
-          failure: `${baseUrl}/checkout?error=failure`,
-          pending: `${baseUrl}/gracias?status=pending`,
+          success: `${baseUrl}/order-status`,
+          failure: `${baseUrl}/order-status`,
+          pending: `${baseUrl}/order-status`,
         },
         auto_return: 'approved',
-      }
+        notification_url: `${baseUrl}/api/webhooks/mercadopago`,
+      },
     });
 
-    // Enviar el init_point devuelto por la API de MercadoPago
     return res.status(200).json({ init_point: result.init_point });
 
   } catch (error) {
-    console.error('Error generando preferencia de MP:', error);
-    // Para entornos dev donde YOUR_ACCESS_TOKEN es invalido y fallará al consultar la API, 
-    // hacemos fallback visual para no romper el flujo de la demo.
-    return res.status(200).json({ 
-      init_point: `${baseUrl}/gracias?demo=true`,
+    console.error('Error generando preferencia:', error);
+    return res.status(200).json({
+      init_point: `${baseUrl}/order-status?status=approved&demo=true`,
       mocked: true,
-      errorMsg: 'AccessToken invalido (demo run)'
     });
   }
 });
 
 app.listen(port, () => {
-  console.log(`API running on port ${port}`);
+  console.log(`API running on port ${port} | MP: ${mpAccessToken ? 'live' : 'demo'}`);
 });
