@@ -24,7 +24,7 @@ export function Hero() {
         overflow: "hidden"
       }}
     >
-      {/* ── Background Video ── */}
+      {/* ── Background Video Layer ── */}
       <div 
         style={{
           position: "absolute",
@@ -32,8 +32,8 @@ export function Hero() {
           left: 0,
           right: 0,
           bottom: 0,
-          zIndex: -2,
-          background: "var(--color-bg-base)", // Fallback color
+          zIndex: -1, // Lo ponemos justo detrás del contenido
+          background: "var(--color-bg-base)",
         }}
       >
         <video
@@ -45,25 +45,27 @@ export function Hero() {
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            opacity: 0.5, // Ajustado a ~50-60% para que no distraiga del texto
+            opacity: 0.7, // Aumentado para que sea más visible
             transform: "scale(1.2)", // Zoom para encuadrar la impresora
             filter: "contrast(1.1) brightness(0.9)",
           }}
         >
+          {/* Intentamos cargar como mov y también como mp4 por si acaso */}
           <source src="/videos/inicio.mov" type="video/quicktime" />
           <source src="/videos/inicio.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
         </video>
         
-        {/* Overlay gradient to ensure text readability */}
+        {/* Overlay gradient para legibilidad */}
         <div style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(to bottom, rgba(var(--color-bg-base-rgb), 0.4) 0%, rgba(var(--color-bg-base-rgb), 0.8) 100%)",
+          background: "linear-gradient(to bottom, rgba(255,255,255, 0.4) 0%, rgba(255,255,255, 0.8) 100%)",
           zIndex: 1
         }} />
       </div>
 
-      {/* ── Fondo Hero Decorativo ── */}
+      {/* ── Cursor Glow y otros efectos decorativos ── */}
       <div 
         style={{
           position: "absolute",
@@ -72,7 +74,7 @@ export function Hero() {
           right: 0,
           height: "100vh",
           pointerEvents: "none",
-          zIndex: -1,
+          zIndex: -2, // La luz del cursor queda detrás del video
           opacity: 0.4,
         }}
       >
@@ -93,7 +95,7 @@ export function Hero() {
             textTransform: "uppercase",
             fontWeight: "var(--weight-semibold)",
             color: "var(--color-text-primary)",
-            background: "rgba(var(--color-bg-base-rgb), 0.5)",
+            background: "rgba(255,255,255, 0.6)",
             padding: "var(--space-1) var(--space-2)",
             borderRadius: "var(--radius-sm)",
             marginBottom: "var(--space-6)",
@@ -113,7 +115,7 @@ export function Hero() {
             color: "var(--color-text-primary)",
             maxWidth: "20ch",
             marginBottom: "var(--space-8)",
-            textShadow: "0 2px 10px rgba(var(--color-bg-base-rgb), 0.5)",
+            textShadow: "0 2px 10px rgba(255,255,255, 0.5)",
           }}
         >
           {words.map((word, i) => (
@@ -158,7 +160,7 @@ export function Hero() {
             lineHeight: "var(--leading-relaxed)",
             maxWidth: "50ch",
             marginBottom: "var(--space-12)",
-            textShadow: "0 1px 4px rgba(var(--color-bg-base-rgb), 0.3)",
+            textShadow: "0 1px 4px rgba(255,255,255, 0.3)",
           }}
         >
           Objetos únicos, diseñados y fabricados digitalmente. Fusionamos la
@@ -176,7 +178,7 @@ export function Hero() {
                   border: "2px solid var(--color-accent)",
                   color: "var(--color-text-primary)",
                   minWidth: "220px",
-                  backgroundColor: "rgba(var(--color-bg-base-rgb), 0.3)",
+                  backgroundColor: "rgba(255,255,255, 0.4)",
                   backdropFilter: "blur(8px)",
                 }}
                 whileHover={{ 
