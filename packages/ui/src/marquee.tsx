@@ -20,7 +20,6 @@ export function Marquee({ items, title = "Nuevos lanzamientos" }: MarqueeProps) 
     <section
       style={{
         padding: "var(--space-20) 0",
-        background: "linear-gradient(to bottom, var(--color-bg-base) 0%, var(--color-bg-muted) 15%, var(--color-bg-muted) 85%, var(--color-bg-base) 100%)",
         overflow: "hidden",
         position: "relative",
       }}

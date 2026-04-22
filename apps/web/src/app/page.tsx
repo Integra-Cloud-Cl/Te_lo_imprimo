@@ -20,7 +20,8 @@ export default function HomePage() {
     <div
       style={{
         minHeight: "100dvh",
-        background: "var(--color-bg-base)",
+        backgroundColor: "var(--color-bg-base)",
+        backgroundImage: "var(--bg-image-base)",
         color: "var(--color-text-primary)",
         fontFamily: "var(--font-sans)",
         overflowX: "hidden",
@@ -31,11 +32,11 @@ export default function HomePage() {
       
       <Hero />
 
-      <Marquee items={randomProducts} />
-
-      <HowItWorks />
-
-      <Vision />
+      <div>
+        <Marquee items={randomProducts} />
+        <HowItWorks />
+        <Vision />
+      </div>
 
       <Footer />
     </div>

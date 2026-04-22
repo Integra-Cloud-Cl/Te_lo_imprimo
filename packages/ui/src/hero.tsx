@@ -33,7 +33,7 @@ export function Hero() {
           right: 0,
           bottom: 0,
           zIndex: -1, // Detrás del contenido
-          backgroundColor: "#0C0B09", // Fondo oscuro para el efecto cine
+          backgroundColor: "transparent", // Eliminado fondo negro para evitar márgenes en tema claro
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -42,7 +42,7 @@ export function Hero() {
         <div style={{
           position: "relative",
           width: "100%",
-          height: "75vh", // Efecto alargado de cine (bandas negras arriba y abajo en pantallas altas)
+          height: "100%", // Ocupar todo el espacio para eliminar las bandas negras
           overflow: "hidden"
         }}>
           <video
