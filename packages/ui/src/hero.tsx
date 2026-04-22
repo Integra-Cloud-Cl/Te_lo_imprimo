@@ -45,13 +45,11 @@ export function Hero() {
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            opacity: 0.7, // Aumentado para que sea más visible
+            opacity: 0.6, // Opacidad al 60%
             transform: "scale(1.2)", // Zoom para encuadrar la impresora
             filter: "contrast(1.1) brightness(0.9)",
           }}
         >
-          {/* Intentamos cargar como mov y también como mp4 por si acaso */}
-          <source src="/videos/inicio.mov" type="video/quicktime" />
           <source src="/videos/inicio.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
