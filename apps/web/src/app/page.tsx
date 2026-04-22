@@ -20,8 +20,7 @@ export default function HomePage() {
     <div
       style={{
         minHeight: "100dvh",
-        backgroundColor: "var(--color-bg-base)",
-        backgroundImage: "var(--bg-image-base)",
+        background: "var(--color-bg-base)",
         color: "var(--color-text-primary)",
         fontFamily: "var(--font-sans)",
         overflowX: "hidden",
