@@ -24,7 +24,7 @@ export function Hero() {
         overflow: "hidden"
       }}
     >
-      {/* ── Background Video Layer ── */}
+      {/* ── Background Video Layer (Cinematic) ── */}
       <div 
         style={{
           position: "absolute",
@@ -32,38 +32,48 @@ export function Hero() {
           left: 0,
           right: 0,
           bottom: 0,
-          zIndex: -1, // Lo ponemos justo detrás del contenido
-          background: "var(--color-bg-base)",
+          zIndex: -1, // Detrás del contenido
+          backgroundColor: "#0C0B09", // Fondo oscuro para el efecto cine
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
         }}
       >
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            opacity: 0.6, // Opacidad al 60%
-            transform: "scale(1.2)", // Zoom para encuadrar la impresora
-            filter: "contrast(1.1) brightness(0.9)",
-          }}
-        >
-          <source src="/videos/inicio.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        
-        {/* Overlay gradient para legibilidad */}
         <div style={{
-          position: "absolute",
-          inset: 0,
-          background: "linear-gradient(to bottom, rgba(255,255,255, 0.4) 0%, rgba(255,255,255, 0.8) 100%)",
-          zIndex: 1
-        }} />
+          position: "relative",
+          width: "100%",
+          height: "75vh", // Efecto alargado de cine (bandas negras arriba y abajo en pantallas altas)
+          overflow: "hidden"
+        }}>
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              opacity: 0.6, // Opacidad al 60%
+              transform: "scale(1.1)", // Ligero zoom
+              filter: "contrast(1.1) brightness(0.9)",
+            }}
+          >
+            <source src="/videos/inicio.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          
+          {/* Overlay negro transparente */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(to bottom, rgba(12,11,9, 0.3) 0%, rgba(12,11,9, 0.8) 100%)",
+            zIndex: 1
+          }} />
+        </div>
       </div>
 
-      {/* ── Cursor Glow y otros efectos decorativos ── */}
+      {/* ── Cursor Glow ── */}
       <div 
         style={{
           position: "absolute",
@@ -72,7 +82,7 @@ export function Hero() {
           right: 0,
           height: "100vh",
           pointerEvents: "none",
-          zIndex: -2, // La luz del cursor queda detrás del video
+          zIndex: -2,
           opacity: 0.4,
         }}
       >
@@ -92,12 +102,13 @@ export function Hero() {
             letterSpacing: "var(--tracking-widest)",
             textTransform: "uppercase",
             fontWeight: "var(--weight-semibold)",
-            color: "var(--color-text-primary)",
-            background: "rgba(255,255,255, 0.6)",
+            color: "rgba(255,255,255,0.8)", // Texto claro
+            background: "rgba(255,255,255, 0.1)", // Fondo translúcido oscuro
             padding: "var(--space-1) var(--space-2)",
             borderRadius: "var(--radius-sm)",
             marginBottom: "var(--space-6)",
             backdropFilter: "blur(4px)",
+            border: "1px solid rgba(255,255,255,0.1)",
           }}
         >
           Estudio de Impresión 3D
@@ -110,10 +121,10 @@ export function Hero() {
             fontWeight: "var(--weight-regular)",
             lineHeight: "var(--leading-tight)",
             letterSpacing: "-0.02em",
-            color: "var(--color-text-primary)",
+            color: "#FFFFFF", // Texto blanco
             maxWidth: "20ch",
             marginBottom: "var(--space-8)",
-            textShadow: "0 2px 10px rgba(255,255,255, 0.5)",
+            textShadow: "0 2px 10px rgba(0,0,0, 0.5)",
           }}
         >
           {words.map((word, i) => (
@@ -138,7 +149,7 @@ export function Hero() {
               damping: 15 
             }}
             style={{
-              color: "var(--color-text-inverse)",
+              color: "#FFFFFF",
               backgroundColor: "var(--color-accent)",
               padding: "0 0.3em",
               borderRadius: "var(--radius-sm)",
@@ -154,11 +165,11 @@ export function Hero() {
         <p
           style={{
             fontSize: "var(--text-lg)",
-            color: "var(--color-text-secondary)",
+            color: "rgba(255,255,255,0.7)", // Texto claro
             lineHeight: "var(--leading-relaxed)",
             maxWidth: "50ch",
             marginBottom: "var(--space-12)",
-            textShadow: "0 1px 4px rgba(255,255,255, 0.3)",
+            textShadow: "0 1px 4px rgba(0,0,0, 0.5)",
           }}
         >
           Objetos únicos, diseñados y fabricados digitalmente. Fusionamos la
@@ -174,9 +185,9 @@ export function Hero() {
                 size="lg"
                 style={{ 
                   border: "2px solid var(--color-accent)",
-                  color: "var(--color-text-primary)",
+                  color: "#FFFFFF", // Texto blanco
                   minWidth: "220px",
-                  backgroundColor: "rgba(255,255,255, 0.4)",
+                  backgroundColor: "rgba(0,0,0, 0.4)", // Fondo oscuro transparente
                   backdropFilter: "blur(8px)",
                 }}
                 whileHover={{ 
