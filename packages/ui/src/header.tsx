@@ -7,6 +7,7 @@ import Link from "next/link";
 import { MagneticButton } from "./magnetic-button";
 import { ThemeToggle } from "./theme-toggle";
 import { useCart } from "./contexts/cart-context";
+import { useTheme } from "./hooks/use-theme";
 
 const NAV_LINKS = [
   { name: "Inicio", href: "/" },
@@ -17,6 +18,7 @@ const NAV_LINKS = [
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { theme, mounted } = useTheme();
   const { items, setIsCartOpen } = useCart();
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -29,10 +31,20 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const isDark = theme === "dark" || !mounted; // Default to dark aesthetic if not mounted
+
+  const glassBg = isDark 
+    ? "rgba(0, 0, 0, 0.45)" 
+    : "rgba(255, 255, 255, 0.65)";
+  
+  const glassBorder = isDark
+    ? "1px solid rgba(255, 255, 255, 0.08)"
+    : "1px solid rgba(0, 0, 0, 0.08)";
+
   return (
     <>
       <motion.header
-        initial={false} // Visible inmediatamente
+        initial={false}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
         style={{
@@ -41,13 +53,13 @@ export function Header() {
           left: 0,
           right: 0,
           zIndex: 100,
-          padding: "var(--space-4) var(--space-8)",
-          backgroundColor: isScrolled ? "rgba(var(--color-bg-base-rgb), 0.85)" : "transparent",
+          padding: isScrolled ? "var(--space-3) var(--space-8)" : "var(--space-4) var(--space-8)",
+          backgroundColor: glassBg,
           backgroundImage: "var(--bg-image-base, none)",
-          backdropFilter: isScrolled ? "blur(20px)" : "blur(0px)",
-          WebkitBackdropFilter: isScrolled ? "blur(20px)" : "blur(0px)",
-          borderBottom: isScrolled ? "1px solid var(--color-border-subtle)" : "1px solid transparent",
-          transition: "padding 0.4s ease, background 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          borderBottom: glassBorder,
+          transition: "all 0.3s ease",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",

@@ -6,8 +6,13 @@ import { MagneticButton } from "./magnetic-button";
 import { RevealOnScroll } from "./animations";
 import { CursorGlow } from "./cursor-glow";
 
+import { useTheme } from "./hooks/use-theme";
+
 export function Hero() {
   const words = "Materializamos ideas con".split(" ");
+  const { theme, mounted } = useTheme();
+  
+  const isDark = theme === "dark" || !mounted;
 
   return (
     <section
@@ -19,7 +24,7 @@ export function Hero() {
         justifyContent: "center",
         width: "100%",
         zIndex: 1,
-        overflow: "hidden" // Asegurar que nada sobresalga lateralmente
+        overflow: "hidden" 
       }}
     >
       {/* ── Background Video Layer (Cinematic & Full Width) ── */}
@@ -29,7 +34,6 @@ export function Hero() {
           inset: 0,
           zIndex: -1,
           backgroundColor: "var(--color-bg-base)",
-          // Máscara para desvanecer bordes
           WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 80%, transparent 100%)",
           maskImage: "linear-gradient(to bottom, black 0%, black 80%, transparent 100%)",
         }}
@@ -53,20 +57,25 @@ export function Hero() {
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              opacity: 0.6,
-              filter: "contrast(1.05) brightness(0.8) saturate(1.2)",
+              opacity: isDark ? 0.6 : 0.75,
+              filter: isDark 
+                ? "contrast(1.05) brightness(0.8) saturate(1.2)"
+                : "contrast(1.1) brightness(0.9) saturate(1.1)",
             }}
           >
             <source src="/videos/inicio.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           
-          {/* Overlay gradiente premium lateral y central */}
+          {/* Overlay gradiente premium (adaptativo) */}
           <div style={{
             position: "absolute",
             inset: 0,
-            background: "linear-gradient(90deg, rgba(12, 11, 9, 0.5) 0%, rgba(12, 11, 9, 0.2) 50%, rgba(12, 11, 9, 0.5) 100%), linear-gradient(0deg, rgba(12, 11, 9, 0.4) 0%, transparent 100%)",
-            zIndex: 1
+            background: isDark
+              ? "linear-gradient(90deg, rgba(12, 11, 9, 0.5) 0%, rgba(12, 11, 9, 0.2) 50%, rgba(12, 11, 9, 0.5) 100%), linear-gradient(0deg, rgba(12, 11, 9, 0.4) 0%, transparent 100%)"
+              : "linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(0,0,0,0.35))",
+            zIndex: 1,
+            transition: "background 0.4s ease"
           }} />
         </motion.div>
       </div>
