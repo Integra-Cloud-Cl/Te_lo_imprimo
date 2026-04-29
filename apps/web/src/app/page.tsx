@@ -8,12 +8,14 @@ import {
   Marquee,
   Vision
 } from "@repo/ui";
-import { useMemo } from "react";
+import { useState, useEffect } from "react";
 import { PRODUCTS } from "@/lib/data";
 
 export default function HomePage() {
-  const randomProducts = useMemo(() => {
-    return [...PRODUCTS].sort(() => Math.random() - 0.5).slice(0, 10);
+  const [randomProducts, setRandomProducts] = useState<typeof PRODUCTS>([]);
+
+  useEffect(() => {
+    setRandomProducts([...PRODUCTS].sort(() => Math.random() - 0.5).slice(0, 10));
   }, []);
 
   return (
